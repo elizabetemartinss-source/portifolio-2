@@ -1,136 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./style.css";
 
 function App() {
   const [temaEscuro, setTemaEscuro] = useState(false);
+  const [jogada, setJogada] = useState(null);
+  const characterRef = useRef(null);
 
-  const alternarTema = () => {
-    setTemaEscuro(!temaEscuro);
-    document.body.classList.toggle("dark");
-  };
-
-  return (
-    <div>
-      <header>
-        <h1>Elizabete Martins</h1>
-
-        <div className="container nav-container">
-          <nav>
-            <ul className="menu">
-              <li><a href="#">Início</a></li>
-              <li><a href="#sobre">Sobre Mim</a></li>
-              <li><a href="#projetos">Meus Projetos</a></li>
-              <li><a href="#contato">Contato</a></li>
-            </ul>
-          </nav>
-
-          <button onClick={alternarTema} type="button">
-            🌙 Tema Escuro
-          </button>
-        </div>
-      </header>
-
-      <main>
-        <section id="sobre" className="Container-sobre">
-          <div>
-            <img src="img/FotoPerfilok.jpg" alt="Foto de perfil" />
-            <h2>Sobre Mim</h2>
-            <p>
-              Sou <strong>Elizabete Alves Martins Carvalho</strong>, estudante de tecnologia com foco em desenvolvimento web, design digital e projetos práticos.
-            </p>
-          </div>
-        </section>
-
-        <section id="projetos">
-          <h2>Meus Projetos</h2>
-
-          <div className="projetos-container">
-            <article className="card-projetos">
-              <h3>Jogo da Velha</h3>
-              <img src="img/HTML5.png" alt="HTML5" />
-              <p>Jogos em HTML</p>
-              <a href="game.html" className="btn-jogo">🎮 Jogar Agora</a>
-            </article>
-
-            <article className="card-projetos">
-              <h3>Sites com CSS3</h3>
-              <img src="img/css.png" alt="CSS3" />
-              <p>As informações do seu projeto aqui</p>
-              <a href="construcao.html" target="_blank" rel="noreferrer">
-                Em Construção
-              </a>
-            </article>
-
-            <article className="card-projetos">
-              <h3>Sites com JS</h3>
-              <img src="img/js.png" alt="JavaScript" />
-              <p>As informações do seu projeto aqui.</p>
-              <a href="construcao.html" target="_blank" rel="noreferrer">
-                Em Construção
-              </a>
-            </article>
-          </div>
-        </section>
-
-        <section id="contato">
-          <h2>Contatos</h2>
-
-          <div className="contato">
-            <p>
-              <img src="img/logoemail.png" alt="Email" />
-              <a href="mailto:elizabetemartinss@gmail.com">
-                elizabetemartinss@gmail.com
-              </a>
-            </p>
-
-            <p>
-              <img src="img/logozap.png" alt="Whatsapp" />
-              <a href="https://wa.me/" target="_blank" rel="noreferrer">
-                (86) 994129887
-              </a>
-            </p>
-
-            <p>
-              <img src="img/logoinstagram.png" alt="Instagram" />
-              <a href="https://instagram.com/" target="_blank" rel="noreferrer">
-                @Elizabete Devel
-              </a>
-            </p>
-
-            <p>
-              <img src="img/Logo01.jfif" alt="GitHub" />
-              <a
-                href="https://www.vivaolinux.com.br/comunidades/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Desenvolvimentos de códigos livres
-              </a>
-            </p>
-          </div>
-        </section>
-      </main>
-
-      <footer>
-        <p>
-          Portfólio desenvolvido por{" "}
-          <strong>Elizabete Alves Martins Carvalho</strong> @ 2026 | Todos os direitos reservados.
-        </p>
-      </footer>
-    </div>
-  );
-}
-import React, { useEffect, useState, useRef } from "react";
-
-function App() {
-  // =========================
   // TEMA
-  // =========================
-  const [temaEscuro, setTemaEscuro] = useState(false);
-
   useEffect(() => {
     const temaSalvo = localStorage.getItem("tema");
-
     if (temaSalvo === "dark") {
       setTemaEscuro(true);
       document.body.classList.add("dark");
@@ -150,20 +28,12 @@ function App() {
     }
   };
 
-  // =========================
-  // JOGO (animação clique)
-  // =========================
-  const [jogada, setJogada] = useState(null);
-
+  // JOGO ESCOLHA
   const play = (choice) => {
     setJogada(choice);
   };
 
-  // =========================
   // JOGO DINOSSAURO
-  // =========================
-  const characterRef = useRef(null);
-
   const jump = () => {
     const character = characterRef.current;
     if (!character) return;
@@ -177,7 +47,6 @@ function App() {
 
   useEffect(() => {
     const handleKeyDown = () => jump();
-
     document.addEventListener("keydown", handleKeyDown);
 
     return () => {
@@ -185,41 +54,18 @@ function App() {
     };
   }, []);
 
-  // =========================
-  // JSX
-  // =========================
   return (
     <div>
-      {/* BOTÃO TEMA */}
       <button onClick={alternarTema}>
         {temaEscuro ? "☀️ Tema Claro" : "🌙 Tema Escuro"}
       </button>
 
-      {/* JOGO ESCOLHA */}
       <div>
-        <button
-          className={`choice ${jogada === "pedra" ? "played" : ""}`}
-          onClick={() => play("pedra")}
-        >
-          Pedra
-        </button>
-
-        <button
-          className={`choice ${jogada === "papel" ? "played" : ""}`}
-          onClick={() => play("papel")}
-        >
-          Papel
-        </button>
-
-        <button
-          className={`choice ${jogada === "tesoura" ? "played" : ""}`}
-          onClick={() => play("tesoura")}
-        >
-          Tesoura
-        </button>
+        <button onClick={() => play("pedra")}>Pedra</button>
+        <button onClick={() => play("papel")}>Papel</button>
+        <button onClick={() => play("tesoura")}>Tesoura</button>
       </div>
 
-      {/* JOGO DINOSSAURO */}
       <div className="game-board">
         <div className="pipe"></div>
         <div ref={characterRef} className="character"></div>
@@ -228,5 +74,4 @@ function App() {
   );
 }
 
-export default App;
 export default App;
