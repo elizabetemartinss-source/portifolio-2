@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./style.css";
-
+<h1>TESTE VISUAL</h1>
 function App() {
   const [temaEscuro, setTemaEscuro] = useState(false);
   const [jogada, setJogada] = useState(null);
@@ -75,3 +75,4 @@ function App() {
 }
 
 export default App;
+
