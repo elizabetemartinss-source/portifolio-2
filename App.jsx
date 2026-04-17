@@ -1,18 +1,21 @@
-<h1>TESTE VISUAL</h1>
 import React, { useEffect, useState, useRef } from "react";
 import "./style.css";
 
 function App() {
   const [temaEscuro, setTemaEscuro] = useState(false);
-  const [jogada, setJogada] = useState(null);
+  const [jogada, setJogada] = useState("");
   const characterRef = useRef(null);
 
-  // TEMA
+  // ===== TEMA =====
   useEffect(() => {
-    const temaSalvo = localStorage.getItem("tema");
-    if (temaSalvo === "dark") {
-      setTemaEscuro(true);
-      document.body.classList.add("dark");
+    try {
+      const temaSalvo = localStorage.getItem("tema");
+      if (temaSalvo === "dark") {
+        setTemaEscuro(true);
+        document.body.classList.add("dark");
+      }
+    } catch (e) {
+      console.log("localStorage não disponível");
     }
   }, []);
 
@@ -29,12 +32,12 @@ function App() {
     }
   };
 
-  // JOGO ESCOLHA
+  // ===== JOGO PEDRA PAPEL TESOURA =====
   const play = (choice) => {
     setJogada(choice);
   };
 
-  // JOGO DINOSSAURO
+  // ===== DINOSSAURO =====
   const jump = () => {
     const character = characterRef.current;
     if (!character) return;
@@ -56,24 +59,33 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className="container">
+      <h1>Meu App React 🚀</h1>
+
+      {/* BOTÃO TEMA */}
       <button onClick={alternarTema}>
         {temaEscuro ? "☀️ Tema Claro" : "🌙 Tema Escuro"}
       </button>
 
+      {/* JOGO */}
       <div>
+        <h2>Pedra, Papel ou Tesoura</h2>
         <button onClick={() => play("pedra")}>Pedra</button>
         <button onClick={() => play("papel")}>Papel</button>
         <button onClick={() => play("tesoura")}>Tesoura</button>
+
+        {jogada && <p>Sua jogada: {jogada}</p>}
       </div>
 
+      {/* JOGO DINOSSAURO */}
       <div className="game-board">
         <div className="pipe"></div>
         <div ref={characterRef} className="character"></div>
       </div>
+
+      <p>Pressione qualquer tecla para pular 🦖</p>
     </div>
   );
 }
 
 export default App;
-
