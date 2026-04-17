@@ -1,55 +1,55 @@
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 import "./style.css";
 
-function App() {
-  const [temaEscuro, setTemaEscuro] = useState(false);
-  const [jogada, setJogada] = useState("");
-  const characterRef = useRef(null);
+function Header() {
+  return (
+    <header>
+      <h1>Meu Portfólio</h1>
+      <nav>
+        <a href="#sobre">Sobre</a>
+        <a href="#projetos">Projetos</a>
+        <a href="#jogo">Jogo</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </header>
+  );
+}
 
-  // ===== TEMA =====
-  useEffect(() => {
-    try {
-      const temaSalvo = localStorage.getItem("tema");
-      if (temaSalvo === "dark") {
-        setTemaEscuro(true);
-        document.body.classList.add("dark");
-      }
-    } catch (e) {
-      console.log("localStorage não disponível");
-    }
-  }, []);
+function Sobre() {
+  return (
+    <section id="sobre">
+      <h2>Sobre mim</h2>
+      <p>Sou desenvolvedora em aprendizado criando projetos com React 🚀</p>
+    </section>
+  );
+}
 
-  const alternarTema = () => {
-    const novoTema = !temaEscuro;
-    setTemaEscuro(novoTema);
+function Projetos() {
+  return (
+    <section id="projetos">
+      <h2>Projetos</h2>
+      <div className="card">
+        <h3>Jogo Pedra Papel Tesoura</h3>
+        <p>Projeto simples em React</p>
+      </div>
+    </section>
+  );
+}
 
-    if (novoTema) {
-      document.body.classList.add("dark");
-      localStorage.setItem("tema", "dark");
-    } else {
-      document.body.classList.remove("dark");
-      localStorage.setItem("tema", "light");
-    }
-  };
+function DinoGame() {
+  const characterRef = React.useRef(null);
 
-  // ===== JOGO PEDRA PAPEL TESOURA =====
-  const play = (choice) => {
-    setJogada(choice);
-  };
-
-  // ===== DINOSSAURO =====
   const jump = () => {
     const character = characterRef.current;
     if (!character) return;
 
     character.classList.add("jump");
-
     setTimeout(() => {
       character.classList.remove("jump");
     }, 500);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handleKeyDown = () => jump();
     document.addEventListener("keydown", handleKeyDown);
 
@@ -59,32 +59,44 @@ function App() {
   }, []);
 
   return (
-    <div className="container">
-      <h1>Meu App React 🚀</h1>
-
-      {/* BOTÃO TEMA */}
-      <button onClick={alternarTema}>
-        {temaEscuro ? "☀️ Tema Claro" : "🌙 Tema Escuro"}
-      </button>
-
-      {/* JOGO */}
-      <div>
-        <h2>Pedra, Papel ou Tesoura</h2>
-        <button onClick={() => play("pedra")}>Pedra</button>
-        <button onClick={() => play("papel")}>Papel</button>
-        <button onClick={() => play("tesoura")}>Tesoura</button>
-
-        {jogada && <p>Sua jogada: {jogada}</p>}
-      </div>
-
-      {/* JOGO DINOSSAURO */}
+    <section id="jogo">
+      <h2>Jogo do Dinossauro 🦖</h2>
       <div className="game-board">
         <div className="pipe"></div>
         <div ref={characterRef} className="character"></div>
       </div>
+      <p>Pressione qualquer tecla para pular</p>
+    </section>
+  );
+}
 
-      <p>Pressione qualquer tecla para pular 🦖</p>
-    </div>
+function Contato() {
+  return (
+    <section id="contato">
+      <h2>Contato</h2>
+      <p>Email: seuemail@email.com</p>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer>
+      <p>© 2026 - Meu Portfólio</p>
+    </footer>
+  );
+}
+
+function App() {
+  return (
+    <>
+      <Header />
+      <Sobre />
+      <Projetos />
+      <DinoGame />
+      <Contato />
+      <Footer />
+    </>
   );
 }
 
